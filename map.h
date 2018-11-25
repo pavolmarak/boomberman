@@ -4,38 +4,43 @@
 #include <QWidget>
 #include <QVector>
 #include <QPoint>
+#include <QMultiMap>
 
+#include "defaults.h"
 #include "player.h"
+
+class MapNotLoadedException{
+    QString description;
+public:
+    MapNotLoadedException(QString description): description(description){}
+    QString getDescription() const  { return description; }
+};
 
 class Map : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Map(QWidget *parent = nullptr);
+    explicit Map(Player* player = nullptr, QSize map_size = QSize(-1,-1), QWidget *parent = nullptr);
 
-    Map(Player& p);
-
-    const Player &getP();
-    void setP(const Player &value);
+    Player *getPlayer() const;
+    void setPlayer(Player *value);
 
     QSize getMap_size() const;
     void setMap_size(const QSize &value);
 
-    QVector<QPoint> getYes_points() const;
-    void setYes_points(const QVector<QPoint> &value);
+    QMultiMap<QString, QPoint> getMap_points() const;
+    void setMap_points(const QMultiMap<QString, QPoint> &value);
 
-    QVector<QPoint> getBrick_points() const;
-    void setBrick_points(const QVector<QPoint> &value);
+    void loadLayoutFromFile(const QString& filepath);
 
 signals:
 
 public slots:
 
 private:
-    Player p;
+    Player* player; // player object
     QSize map_size; // in px
-    QVector<QPoint> yes_points;
-    QVector<QPoint> brick_points;
+    QMultiMap<QString,QPoint> map_points; // points in game map
 };
 
 #endif // MAP_H

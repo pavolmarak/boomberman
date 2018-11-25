@@ -31,7 +31,8 @@ SOURCES += \
 HEADERS += \
     player.h \
     map.h \
-    game_engine.h
+    game_engine.h \
+    defaults.h
 
 FORMS += \
     game.ui

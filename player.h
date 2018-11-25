@@ -17,11 +17,10 @@ class Player : public QObject
 public:
     explicit Player(QObject *parent = nullptr);
 
-    Player(const Player& p);
     QPoint getPos() const;
     void setPos(const QPoint &value);
 
-    const QMap<QString, QPixmap> &getFig_pixmaps();
+    const QMap<QString, QPixmap> &getFig_pixmaps() const;
     void setFig_pixmaps(const QMap<QString, QPixmap> &value);
 
 signals:

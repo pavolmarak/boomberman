@@ -1,23 +1,25 @@
 #include "map.h"
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include <iostream>
 
-Map::Map(QWidget *parent) : QWidget(parent)
+
+Map::Map(Player* player, QSize map_size, QWidget *parent) :
+    player(player),
+    map_size(map_size),
+    QWidget(parent)
 {
-
 }
 
-Map::Map(Player &p):
-    p(p)
+Player *Map::getPlayer() const
 {
+    return player;
 }
 
-const Player& Map::getP()
+void Map::setPlayer(Player *value)
 {
-    return p;
-}
-
-void Map::setP(const Player &value)
-{
-    p = value;
+    player = value;
 }
 
 QSize Map::getMap_size() const
@@ -30,22 +32,51 @@ void Map::setMap_size(const QSize &value)
     map_size = value;
 }
 
-QVector<QPoint> Map::getYes_points() const
+
+
+void Map::loadLayoutFromFile(const QString &filepath)
 {
-    return yes_points;
+    if(!QFile::exists(filepath)){
+        throw MapNotLoadedException("File does not exist.");
+    }
+    QFile file(filepath);
+    if(file.open(QFile::ReadOnly)){
+        map_points.clear();
+        QTextStream txt(&file);
+        char tile;
+        int row=0, col=0;
+        while(!txt.atEnd()){
+            txt >> tile;
+            if(tile == YES_TILE){
+                map_points.insert("yes",QPoint(col*TILE_SIZE,row*TILE_SIZE));
+            }
+            else if(tile == BRICK_TILE){
+                map_points.insert("brick",QPoint(col*TILE_SIZE,row*TILE_SIZE));
+            }
+            else if(tile == IRON_TILE){
+                map_points.insert("iron",QPoint(col*TILE_SIZE,row*TILE_SIZE));
+            }
+            else if(tile == END_LINE_TILE){
+                col = 0;
+                row++;
+                continue;
+            }
+            col++;
+        }
+        file.close();
+    }
+    else{
+        throw MapNotLoadedException("Problem opening file.");
+    }
+
 }
 
-void Map::setYes_points(const QVector<QPoint> &value)
+QMultiMap<QString, QPoint> Map::getMap_points() const
 {
-    yes_points = value;
+    return map_points;
 }
 
-QVector<QPoint> Map::getBrick_points() const
+void Map::setMap_points(const QMultiMap<QString, QPoint> &value)
 {
-    return brick_points;
-}
-
-void Map::setBrick_points(const QVector<QPoint> &value)
-{
-    brick_points = value;
+    map_points = value;
 }

@@ -8,12 +8,6 @@ Player::Player(QObject *parent) : QObject(parent)
     fig_pixmaps.insert("right",QPixmap(PRO_PATH+QString("/img/right.png")));
 }
 
-Player::Player(const Player &p):
-    pos(p.getPos()), fig_pixmaps(p.getFig_pixmaps())
-{
-
-}
-
 QPoint Player::getPos() const
 {
     return pos;
@@ -24,7 +18,7 @@ void Player::setPos(const QPoint &value)
     pos = value;
 }
 
-const QMap<QString, QPixmap>& Player::getFig_pixmaps()
+const QMap<QString, QPixmap>& Player::getFig_pixmaps() const
 {
     return fig_pixmaps;
 }

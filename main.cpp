@@ -4,8 +4,13 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    GameEngine w;
-    w.show();
-
-    return a.exec();
+    try{
+        GameEngine w;
+        w.show();
+        return a.exec();
+    }
+    catch(const MapNotLoadedException& e){
+        qDebug() << e.getDescription();
+        return EXIT_FAILURE;
+    }
 }

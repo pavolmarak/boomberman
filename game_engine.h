@@ -12,8 +12,11 @@
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 #include <QVector>
+#include <QMultiMap>
 
+#include "defaults.h"
 #include "map.h"
+
 
 namespace Ui {
 class GameUI;
@@ -27,17 +30,21 @@ public:
     explicit GameEngine(QWidget *parent = nullptr);
     ~GameEngine();
 
+    Map *getMap() const;
+    void setMap(Map *value);
+
 private:
     Ui::GameUI *ui;
     QTimer *timer;
     QMap<int, bool> keys;
-    bool eventFilter(QObject *obj, QEvent *event);
-    QGraphicsPixmapItem* figure;
-    QVector<QGraphicsPixmapItem*> bricks;
-    QVector<QGraphicsPixmapItem*> yeses;
-    QGraphicsScene* scene;
     qreal step;
-    Map map;
+    QGraphicsPixmapItem* figure;
+    QMultiMap<QString,QGraphicsPixmapItem*> tiles;
+    QGraphicsScene* scene;
+    Player* player;
+    Map* map;
+
+    bool eventFilter(QObject *obj, QEvent *event);
 
 private slots:
     void timerOutEvent();
