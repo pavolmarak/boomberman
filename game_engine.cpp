@@ -8,7 +8,7 @@ GameEngine::GameEngine(QWidget *parent) :
     ui->setupUi(this);
     step = 5;
 
-    ui->graphicsView->installEventFilter(this);
+    ui->view->installEventFilter(this);
 
     figure = new QGraphicsPixmapItem(map.getP().getFig_pixmaps().first());
     figure->setPos(0,0);
@@ -16,7 +16,7 @@ GameEngine::GameEngine(QWidget *parent) :
     scene = new QGraphicsScene();
     scene->addItem(figure);
 
-    ui->graphicsView->setScene(scene);
+    ui->view->setScene(scene);
 
     timer = new QTimer();
     timer->setInterval(30);
